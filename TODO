@@ -1,0 +1,300 @@
+To Do List
+----------
+
+/* This list may or may not be up to date, and the things in this list may
+   or may not end up in XRoads. In other words, don't trust it */
+
+***********************
+*** The Basic Stuff ***
+***********************
+
+<*DONE*> Rearrange so that each entity has it's own information, and
+<*DONE*> redraw using that instead.
+
+<*N/A*> Seperate info for wall tiles? (redraw characters, then walls)
+
+<*DONE*> Keep grid matrix for collision detection purposes (Hold entity ID
+<*DONE*> in matrix instead. Easier collision detection/attacking then)
+
+<*DONE*> Find a way to use integer arrays for graphics instead of chars
+
+<*DONE*> Incorporate all tiles into single array (may be hard, considering
+<*DONE*> animation frames, spars=3 frames, walls/bullets/etc=1)
+<*DONE*> -OR-
+<*DONE*> Huge indexed array. Keep variables pointing to 1st, 2nd, and 3rd
+<*DONE*> frames of animation inside array (creature.frame1, etc) would be
+<*DONE*> 3D array instead of 4. MAJOR alterations (not pointers, integer
+<*DONE*> references to tiles)
+<*DONE*> -OR-
+<*DONE*> Incorporate tile into creature structure
+<*DONE*> -OR-
+<*DONE*> Make data[].frame1, frame2, etc pointers that point to tiles
+
+         NOTE: Did the last one... data[monsterid].tile[0], [1], etc
+
+<* Still needs some evolution *>
+Define standard structures for entities including:
+	X, Y Coordinates
+	Entity Type
+	Animation frame
+	Direction
+	Speed
+	Health
+	Status:
+		Invulnerable?
+		Invisible?
+		etc..?
+	Power-up time left (For newer powerups)
+	...?
+
+<* Still needs some evolution *>
+Define standard structures for creature information:
+	Color
+	Speed
+	Initial health
+	Attack types (2? more?)
+	Attack speed (Same as normal speed?)
+	Difficulty (?)
+	Frames of animation (0 for walls, 2 for spars, else 1)
+	Wrapping animation, or remove after finished? (Explosions)
+	Animation repeats before removal (for powerups)
+	Tile index(s) / Tile(s) itself
+	Point value (Difficulty?)
+	Game association ('Roads 1, 2, both, new)
+	Extended info:
+		Bullet/automatic?
+		Rubberhead?
+		Alliances?
+		Special abilities?
+	Intelligence (0 for projectiles, 1=random movement, 2=light 
+                      homing, 3=search and destroy)
+	...?
+
+<*DONE*> Put all creature/constant/etc definitions into seperate file
+<*DONE*> (tiles at least)
+
+<*DONE*> Will most likely need a Makefile at this point
+
+<*DONE*> Create a main loop that polls for events instead of waiting
+
+<*DONE*> Have entities move on their own during game loop, check speed
+
+<* Still needs some evolution *>
+Define various attack types:
+	Melee
+	Projectile
+		Bullet
+		Arrow
+		Worm (For rubberheads)
+	Vaccuum
+
+Add additional keys:
+<*DONE*>Quit   (Esc)
+<*DONE*>Redraw (R)
+<*DONE*>Pause  (Pause or P)
+	...?
+
+<*DONE*> Standard maps
+
+<*DONE*> Put maps in files?
+
+<*DONE*> "Slippery" walls? (This is hard to explain, but it's the best way
+<*DONE*> I can think of describing it) (Keep old direction, and if new one
+<*DONE*> not valid, try going in the same direction as before (Note: Make
+<*DONE*> sure you actually can still move in that direction))
+
+<*DONE*> 8x8 grid for "half steps" (Use integer number of 0.5's for grid
+<*DONE*> location?
+<*DONE*> Note: Can't be in two half-steps at once, must slide into one
+<*DONE*> ahead)
+
+<*DONE*> Alter draw_tile to use a #defined constant (variable?) for grid
+<*DONE*> size. Use for loop
+
+<*DONE*> Collision detection for attacks/spars/etc
+
+<*DONE*> Add in projectiles
+
+<*DONE*> Simple explosion animation (Just 8x8 tiles)
+
+<*DONE*> AI for creatures
+
+<*DONE*> Alliances for creatures (Foes, grudges, etc)
+
+Demo mode (Wouldn't necessarily need alliances, though would be boring)
+
+<*DONE*> Monochrome support
+
+<*DONE?*> Low bit depth support [Seems to work fine in 8 bit now...]
+
+Make more maps, and make them selectable
+
+Clean up window/Xserver startup (Probably quite messy)
+
+<*DONE*> #ifdef all the debugging messages so people can #undef DEBUG to
+<*DONE*> ignore them all
+
+Write documentation/manual (man page? html?)
+
+<*DONE*> Finished up that Makefile yet?
+
+<*DONE*> Set up web page
+
+**************************************************
+*** Should hopefully be playable at this point ***
+**************************************************
+
+<*DONE!*> 2 Player mode! [4 players at once actually]
+
+<*DONE*> Create scorebar along top (fonts? tiles for letters?)
+-OR-
+<*N/A*> Create seperate window for score (Make this an option?)
+
+Allow draw_tile to resize dynamically, ie. use +/- to resize screen, and
+make the constant a variable (Problem: Font changes?)
+
+Create icon for window managers
+
+Create scoring scheme
+
+High score list
+
+High kills/spars/level/etc lists
+
+<*DONE*> Create speed-up spars
+
+Tagteam/mutant cooperation
+
+<*DONE*> Rubberheads rebounding bullets
+
+Eggheads "cloaking"
+
+<*DONE*> Vaccuums weapon (Vaccuums currently helpless)
+
+<*DONE*> Skulls speeding up when eating a spar
+
+<*DONE*> Enemies picking up spars
+
+<*DONE*> Better enemy target choosing <--- Important
+
+(Better) Explosion for creation/death (16x16?)
+
+Settings menu/interface (Long ways off.. widgets?), change settings and
+turn off options (Pandemonium mode)
+
+Control configuration (Run time)
+
+Run-time loaded character set (Themes?)
+
+<*DONE*> Use cursor keys for movement instead (Need to learn keysyms)
+<*DONE*> Maybe use F-keys for some secrets?
+
+Pandemonium mode:
+	Creatures 'port in randomly
+	Spars 'port in randomly
+	Include old characters option
+
+<*DONE*> Command line parameters:
+<*DONE*> 	Speed?
+        	Map file to use (create custom maps)
+	        Color of player?
+<*DONE*>        Display to use (segfault when no display found)
+	        Size of tiles (8x8, 16x16, 32x32? higher?)
+	        ..?
+
+~/.xroadsrc file? Appdefaults?
+
+Fix bugs and adjust feel of game
+
+Hopefully optimize a lot
+
+**************************************************************
+*** Should hopefully be comparable to original version now ***
+**************************************************************
+
+Add some new stuff (Make optional (Pandemonium Mode?)):
+	Speed-ups seperate from normal spars?
+	Different game modes
+		Scenarios?
+			Capture the flag?
+	Extra powerups (Time based):
+		Invulnerability (Flashing character)
+		Invisibility (Grey character)
+		Juggernaut (Plow through enemies)
+		Turbo (better than speed-up spars)
+		Ghost mode (Walk through walls)
+		Power bullets (Plow through enemies)
+		Bonus tokens (Clubs, Diamonds, Hearts, Spades?)
+		..?
+	Teleporters:
+		Wormholes (Enter/exit)
+		Hyperspace (Random 'port)
+	Items/Weapons:
+		Bombs (Bomberman Style)
+		Rockets (Bullet explodes like a bomb)
+		Droppable power-downs for deathmatch
+		Pet eggs
+		Mask (Go undercover as a creature)
+		Extra life(s) (3-up moon?)
+		..?
+	Power-downs/traps:
+		Pits/spikes?
+		Disappearing/secret walls
+		Freeze spots (turn character light blue/reversed/both?)
+		REAL invisibility (To you as well)
+		Hallucination? (Rather extreme)
+		Teleportitis
+		Slowdowns (bullets/running speeds)
+		..?
+	Inventory (1 item only?)
+		2nd button to activate inventory item
+	Creatures affected by traps
+	"Deathmatch" mode:
+		Lots of traps/items
+		Lots of spars
+		..?
+	Limited amount of ammo? (May ruin game.. optional?)
+	New enemies
+	Boss creatures?
+	Altered versions of current characters (green lemonshark, etc)
+	New playable characters w/ different abilities/tiles
+	New weapons:
+		Bow and arrow (ala Archer/Thrower)
+		Worms (ala Rubberheads)
+		Vaccuum? (Would be difficult to program, but fun to use!)
+		..?
+
+Secrets:
+	Access:
+		Codes at main menu?
+		Command line parameters?
+		Key combinations?
+		Environment variables?
+		Type in during game? (Keep stack of keypresses, and
+			compare against strings)
+		All of the above?
+	Hints?:
+		Every 10th level (20th?)
+		On high scores?
+	Types:
+		Change colors
+		Hidden messages (credits, greets, etc)
+		Extra points (x100 bonus or something)
+		More powerups
+		Invulnerability/Invis/Juggernaut/Speed/etc
+		Play as a creature
+		Debug mode (Hit I for Invisibility, other keys...)
+		..?
+
+Maze editor? (Files are basic ASCII anyways, vi works if you're careful)
+
+Non mirror maps? (I find Mirrored maps best)
+
+Multi-colored tiles / XPM based tiles (Can anyone teach me XPM's without
+Imlib/etc? :)
+
+Colorful main screen/main menu (XPM based most likely)
+
+Re-write in C++, use classes for characters? (Not bloody likely)
+
+Client/Server interface for network games? (Don't hold your breath)

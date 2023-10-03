@@ -1,0 +1,4 @@
+#define r_bracket_width 8
+#define r_bracket_height 8
+static unsigned char r_bracket_bits[] = {
+   0x3c, 0x30, 0x30, 0x30, 0x30, 0x30, 0x3c, 0x00};

@@ -1,0 +1,4 @@
+#define l_paren_width 8
+#define l_paren_height 8
+static unsigned char l_paren_bits[] = {
+   0x30, 0x18, 0x0c, 0x0c, 0x0c, 0x18, 0x30, 0x00};

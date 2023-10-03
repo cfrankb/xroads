@@ -1,0 +1,82 @@
+Known Bugs in XRoads:
+---------------------
+
+Monsters sometimes attack the little explosions that occur, and get stuck
+in a loop (Not a fatal problem, but a little annoying)
+
+Some difficulties with monsters being sucked up by vaccuums; can be pulled
+into walls, or sucked past other monsters
+
+On Solaris, there's a block on the screen that if you shoot it and then
+walk through it, you will get a segfault. This ONLY happens on Solaris it
+seems, and Solaris doesn't get the above bug. I think they're caused by
+the same problem though. (This might have been fixed/changed.. I don't
+have a Solaris machine to test it on at the moment)
+
+Walking in the same direction you're firing ruins the handling a
+noticeable amount. This is because the game thinks you're trying to walk
+into your bullet, and stops you (And starts you again when it notices the
+bullet is out of the way). I don't know how I'll fix this yet...
+Hopefully, if I make things move a half square at a time (like the
+original Crossroads did), this will be fixed. (With new player motion,
+it's not so bad, so I don't think I'll bother fixing it) (Could be fixed
+by keeping a relation between player speed and shot speed? Probably more
+work than it's worth, and would screw up some gameplay)
+
+With a low bit depth, allocating colors isn't very aggressive. Therefor,
+if you're running other programs that are hogging the pallette, XRoads
+loses a lot of it's colors. It doesn't seem to be a huge problem, and only
+really happens when I'm running Enlightenment in 8bpp (NOT my usual setup)
+
+Fixed Bugs:
+-----------
+
+Characters intermittently pause when holding a key down (Might be fixed
+with new keyboard handling)
+***** Fixed! (This doesn't seem to be happening anymore, so I think it's
+safe to say the new key handling must have done the trick. Not sure why it
+was happening before though...)
+
+Firing delay doesn't work correctly when game is slowed down using -delay
+***** Fixed! (At least, I *think* it's fixed... to be honest, I'm not sure
+what I meant by this in the first place)
+
+Archers don't move. Something is setting data[ARCHER].speed to -2, so it
+will never move. This is probably an array overrun like the next two
+problems
+***** Fixed! (In fileops.c, I was initializing the map to be blank before
+filling it with walls, however, my loop to blank it out was really screwed
+up, and threw -2's into data[ARCHER].speed about 900 times instead.
+Unfortunately, this doesn't seem to be the source of any of the other bugs
+so far...)
+
+If you fire north from the top row of the screen in the 4th - 7th columns
+(only possible on some maps), your character will start moving. To stop,
+you have to press that direction again. I haven't been able to find out
+why this is happening, though I'm sure I'm overrunning an array somewhere
+(Can anyone find it?)
+--- Update!
+This bug has mutated! Now, if you fire north from the top row, fourth
+column, there is a segfault. This change is probably because of a change
+to the way key data is handled, but the cause of this bug is most likely
+still the same
+***** Fixed! (spawnbullet() wasn't correcting the initial position of the
+bullet, so if you fired from the top of the map, the y value would be -1,
+and it would write into a negative subscript in maze[][]. Strange that
+this didn't happen in more areas of the map...)
+
+When the game is paused, the other three players appear in their respective
+starts, even if they're not playing (Does not affect anything else though)
+***** Fixed (Actually, I knew right away what was causing this, but kept
+putting off fixing it, as there was bigger problems. The problem was that
+it was running through monst[x], and redrawing everything, forgetting that
+the players reside in monst[0-3]. It was also starting the loop at 1,
+which would miss the first player, so I caught a bug I didn't even know
+about :)
+
+If game crashes, X's key repeats are turned off (Or rather, not turned
+back on). "xset r" will fix this, and I'm not sure if there's any way to
+fix it anyways.
+***** Fixed (Used a signal handler to reset key repeats (as well as
+disconnect from X) on a fatal signal. Will also reset keyrepeats on a ^C
+and other such signals)

@@ -1,0 +1,4 @@
+#define backslash_width 8
+#define backslash_height 8
+static unsigned char backslash_bits[] = {
+   0x00, 0x06, 0x0c, 0x18, 0x30, 0x60, 0xc0, 0x00};

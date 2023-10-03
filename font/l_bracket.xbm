@@ -1,0 +1,4 @@
+#define l_bracket_width 8
+#define l_bracket_height 8
+static unsigned char l_bracket_bits[] = {
+   0x3c, 0x0c, 0x0c, 0x0c, 0x0c, 0x0c, 0x3c, 0x00};

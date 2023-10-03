@@ -1,0 +1,4 @@
+#define percent_width 8
+#define percent_height 8
+static unsigned char percent_bits[] = {
+   0x46, 0x66, 0x30, 0x18, 0x0c, 0x66, 0x62, 0x00};

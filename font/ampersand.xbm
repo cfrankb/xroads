@@ -1,0 +1,4 @@
+#define ampersand_width 8
+#define ampersand_height 8
+static unsigned char ampersand_bits[] = {
+   0x3c, 0x66, 0x3c, 0x1c, 0xe6, 0x66, 0xfc, 0x00};

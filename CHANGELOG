@@ -1,0 +1,418 @@
+(Releases are marked with an = instead of a -)
+
+July 15/99 - Found a strange bug in screenmsg(), noticed that screentxt()
+             is basically the same as screenmsg(), but is never used. Wow,
+             is screens.c ever a mess...
+           - Added XRTextDir() where Dir = Up, Down or Left (XRTextRight()
+             would be the same as XRText) to draw text in different
+             directions
+           - Added directions UP2, DOWN2, LEFT2 and RIGHT2 to provide
+             reversed versions of the originals (UP2 was needed for
+             XRTextUp(), or the text was hard to read)
+           - Added XRTextDir2() to provide upside down versions of
+             XRTextDir(), suitable to use as shadows or reflections or
+             whatever (Yeah, it's not very useful, but it was a small
+             addition)
+           - Oh, it turns out that pause uses screentxt(), so I won't
+             delete it after all (It may be useful later on too)
+           - The title screen now sports a little show of the XRText()
+             functions
+
+July 14/99 - XRText() now works properly with number and uppercase
+           - "Right Thing"-ized XRText()... it now handles all regular
+             ASCII (32 to 126 anyways). Had to make some characters for
+             ones missing from PETSCII... in particular: {|}~ and \ (up
+             and left arrow have been replaced with carat and
+             underscore... I figure _ is more useful than left arrow)
+
+July 13/99 - Improved difficulty levels
+           - XRText() now added which draws text with the C64 font (Mostly
+             works, but needs a few fixes (and needs a FULL ascii set)
+           - updatescore() now uses XRText(), eventually, all the title
+             screens and such probably will too. XRText should port to
+             other OS's better than using X fonts seems to. Plus, it gives
+             the C64 feel to the game
+
+July 12/99 - Mutants and Tagteams can now join forces, just like in
+             Crossroads II
+           - Start of difficulty levels; currently, monsters will wait
+             until a certain level before they will start to be spawned.
+             It needs to be calibrated a little though...
+           - All monsters now have their own unique point value, including
+             human players, and powerups
+           - Fixed a bug where if you shot a monster at point-blank range,
+             you would not get any points (An old bug that I did not
+             previously notice)
+
+July 5/99  - Joystick can now be disabled with 'xroads -j 0' or by a
+             change to config.h
+           - Path to data files in Makefile no longer needs a / on the
+             end, but the binary install path does
+           - Rubberheads now bounce bullets back in your direction. You
+             must shoot them as they're facing you if you want to damage
+             them
+           - There is a description of some of the monsters in the README
+             now. Mostly added so that some of the special features of
+             some monsters can be explained
+
+July 3/99  - Monsters will now clump together if they have no other target
+             (If a target runs out into the open though, they'll attack)
+           - Monsters will now pick up spars, and it WILL increase their
+             health
+           - Skulls now speed up when they eat a spar. DON'T let they get
+             more than one, or they will be basically unstoppable >:)
+
+July 1/99  - New monster targetting code... works really well!
+           - Alliances are working... though they could work better (I'm
+             not even sure they're correct teams..) Also, monsters don't
+             yet clump together like in Crossroads.
+           - Thanks to Bob Glamm, XRoads is now SGI safe! Compile away,
+             and even with the native compiler
+           - Happy Canada Day everone!
+
+June 30/99 = XRoads v0.5 is released
+
+June 29/99 - Created .xbm's of all the original C-64 letters/numbers..
+             should be useful for something (options menu?)
+           - Fixed small problems with clearshot()
+           - Faster character, and more monsters for more action (More
+             like Crossroads)
+           - Added even more wall tiles (Not from Crossroads)
+           - Took a hint from Snes9X to turn off the pointer in the window
+             (Well, actually it just turns the pointer into a single
+             pixel, but that's good enough for me)
+           - Started gearing up for a new release, everything seems fairly
+             stable to me
+
+June 28/99 - Monsters no longer attack unless they can see you. This was
+             mostly included to fix a bug where the VacAttack would pull
+             you through a wall under some conditions. It will also be
+             useful when better monster targetting code is added
+           - Monsters will now attack a Green Vaccum if they are being
+             sucked
+           - Now the game won't end until ALL players are dead
+           - Slight alterations to tiledata.c Might move to using .xbm's
+           - Worked on "slippery walls". If you press against a wall,
+             XRoads will try to move in the direction you were originally
+             moving (This makes the handling work better, and is really
+             cool when you get used to it). (Seems to be bug free...)
+
+June 27/99 - Added a signal handler to catch fatal errors and exit nicely.
+             No more having to type 'xset r' after a segfault (Currently
+             catches SIGSEGV, SIGBUS, SIGTERM, SIGINT, and SIGHUP). Note
+             that after cleaning up, core dumps and such will still take
+             place (this is intentional)
+           - Corrected bug where no spars would be spawned if
+             SPARSPERLEVEL was less than 5. Now always spawns at least one
+           - Made 'make install' nicer with respect to XRMPATH
+           - Added 'make uninstall' which deletes xroads and it's data
+           - Updated the README on some new features
+           - Some code modifications: readjoy(), updatescore()
+           - Map names changed to mapXX.xrm, allowing up to 100 predefined
+             maps
+           - Added more maps and wall tiles from Crossroads I and II
+           - VacAttack now works (I hope) Being sucked up by a vaccuum is
+             instant death. I'd like to test this code a little more
+             before I declare it "working" though
+
+June 26/99 - Recieved an updated random map generator from Michele Bini
+             which features axial, biaxial, and central symmettry, so the
+             maps are even better! XRoads will also dump to stdout the
+             seed used to create that map (Eventually, you'll be able to
+             tell XRoads which seed to use, but not yet) Great work
+             Michele!
+           - Finally added an install procedure... just 'make install',
+             and it will copy the map files into /usr/games/xroads, and
+             the binary into /usr/X11R6/bin (If you want to install to
+             different directories, you must also change the XRMPATH
+             constant in config.h)
+           - (Hopefully) fixed a bug where a spar would appear between two
+             squares along the top or left side
+
+June 24/99 - Fixed some annoying bugs with wrapping movement. Should be
+             all cleared up now
+           - Fixed some minor problems with pause screen
+
+June 22/99 - Half-steps should be nice and stable for all players and
+             creatures
+           - Started work on VacAttack. It sort of works, but I think I
+             might have to rewrite some stuff to make it work the way it
+             did in Crossroads
+           - Joystick control can now be set to a certain player with the
+             -j command line option. "xroads -p 3 -j 2" will make the
+             joystick control player 2
+           - Merged in a random maze generator written by Michele Bini.
+             Thanks Michele! It works great!
+           - Random maze generator hits a bug introduced by half-steps.
+             (Problems with player wrapping from one side of the maze to
+             another)
+
+June 21/99 - Player now successfully makes "half-steps". Though this slows
+             down the players motion a little, making the game a little
+             slower paced. Changed players speed to compensate somewhat.
+             Also, the changes to playerturn() that let you take
+             half-steps are NASTY. There's probably a much easier way to
+             do it, but it works
+           - Monsters also do half-steps... though there are still some
+             bugs to be worked out. I really should just rewrite most of
+             the monster code
+           - Rewrote some of the monster movement code so that it works
+             better with half-steps. Still some problems though
+           - Merged in my joystick driver, works great on my Gravis! Not
+             sure how well it'll work on an analog joystick. Joystick
+             currently controls player 1, but will be selectable
+
+June 20/99 = XRoads v0.4 (The Anniversary Edition) is released, almost 11
+             months after v0.3
+           - Wrote a test program (not part of XRoads) that is able to
+             read joystick input. XRoads v0.5 will likely have joystick
+             support, though I want to clear up a few things before I
+             incorporate this into XRoads (btw, it uses the Linux joystick
+             driver, so I'm not sure how portable this is...)
+
+June 19/99 - More multiplayer mode fixes. Three and four player mode
+             should be working as well as 2 player mode now (single player
+             still works best for now though)
+           - Player 3 and 4 keys defined: i, k, j, l, space are up, down,
+             left, right, and fire for player 3, and 8, 5, 4, 6, and Enter
+             on the keypad are player 4's keys. Yeah, I know this is
+             crowded, change them in config.h if you don't like them (If
+             5 on the keypad isn't working for you, let me know... I'm not
+             sure how universal the method I took is...)
+           - Score for players 3 and 4 now shown in score box
+           - Scorebox resizes itself on startup depending on number of
+             players
+           - "xroads -keys" now shows the keyboard configuration for all
+             players, plus the extra keys (pause, quit, etc)
+           - Status bar shows a picture of the player instead of just
+             "Player 1". I'd like to eventually jam all 4 players info
+             into a one-line status bar, so there'll be more icons coming
+
+June 18/99 - Many fixes to multiplayer mode, 2nd player score now shown
+           - Number of players now a command line option, use xroads -p #
+             to play with # players (must be between 1 and 4). Players 3
+             and 4 don't work properly yet though (No keys defined yet)
+           - Fixed some strange externs hoping it would fix the segfault..
+             ... it didn't
+
+June 17/99 - 2 Player mode now works! There are still some issues that
+             need to be cleared up (such as when to exit, and some
+             scoring), but both can run and fire and collect spars getting
+             the other 2 players working would be trivial, but I first
+             want to work in a command line option to choose 2 player mode
+             so that 4 player mode won't be the default
+           - Some changes to the keyhandling (necessary for multiplayer)
+             have mutated a known bug into a segfault. See BUGS for more
+             info
+           - Keys changed: Return is now the default fire key. This can be
+             put back to space in config.h by defining OLDKEYS
+           - Added an alternate fire for future use (backslash for P1,
+             caps lock for P2)
+
+June 14/99 - Made room for 3 more players. Multiplayer is still not
+             possible yet, but it's a lot closer. I'll have to find some
+             better ways to control characters though... 4 players on one
+             keyboard would suck (joystick?)
+           - Introduced tons of bugs, but squashed most of them
+           - Slowed down the speed-up from the Blue Spar. It still makes
+             you really fast, but it was too fast to control before (Plus,
+             I have plans for extra power-ups in the future, one of which
+             will be a Super-Turbo, and it has to be faster)
+           - Made Hyper Mode a lot faster... it's basically unplayable :)
+           - Bumped the version numbers in all the files to 0.4... a lot
+             of them still said v0.1
+
+June 13/99 - Yikes! It's been a damn long time! However, someone just
+             emailled me about the game saying they liked it, so I got
+             inspired to work on it a bit more :) Thanks!
+           - Added the start of some parenting code. This means that
+             XRoads will know what bullets belong to who, and will make a
+             2 player mode MUCH easier to code
+           - Due to parenting, you can't get credit for monsters that kill
+             each other. They get their own points.
+           - Some new elements in the entity structure: ind for the index
+             of the monster in monst[], hurt for knowing who hit the
+             monster last (Currently used for scoring purposes, will
+             probably be incorporated into AI though... revenge anyone? :)
+           - Updated TODO and BUGS a bit
+           - Monsters will now attack each other! However, it will only
+             happen if you get one to anger another, like in Doom and
+             Quake. Since the enemies are really stupid, I'll probably
+             upgrade their homing range if they're attacking someone other
+             than the player, that way it'll be more fun to watch
+           - Also cleaned up the nastiness that was desthome(), and some
+             other functions that were too restrictive
+           - Worm's deaths will no longer spawn another creature, this
+             would cause huge amounts of enemies when a few rubberheads
+             were in the level
+           - Monsters won't get mad at themselves and suicide (oops :)
+           - Fixed an incredibly stupid bug in fileops.c that was causing
+             the frozen archers. I'm not the best programmer, but yikes,
+             that was a bad one...
+           - Also of note: Next week (June 20/99) will be the one year
+             anniversary of XRoad's first release! Hopefully, I'll have
+             something special then...
+
+Sept  1/98 - (I was on a 2 week trip to Philadelphia, and I've been
+             getting ready for university, gimme a break)
+           - Got an account on a SunOS 5.5.1 machine, and got XRoads to
+             compile, though I get tons of warnings from Xlib. The game
+             still works fine, so I'll just assume they're not my fault :)
+             Also cleaned up a bit of the source per my university's gcc
+             (btw, their 'cc' doesn't seem to like XRoads, and I'm too
+             lazy to figure out why)
+
+Aug.  3/98 - My Birthday... 18 years old, woohoo!
+           = Fourth public release of XRoads (v0.3)
+
+Aug.  2/98 - Some score counting added in (The score is held in a long
+             int, so don't even bother trying to overflow it... or am I
+             the only one that tries to crash games like this? heheh)
+           - Heads up display that shows your health, score, etc... I am
+             NOT happy with the way it works right now, so expect it to
+             change soon
+           - Ooops, Arrows were doing 2 hits of damage instead of one, and
+             pulling some funny stuff... fixed.
+           - Added in a secret. Here's a hint: Not ALL the keys are unused
+           - Two new powerups! : The Blue Spar, which speeds up your
+             character (though some people might have a hard time
+             controlling such a fast character, it can be powerful if you
+             learn to use it), and the Red Spar, which speeds up your gun
+             (Unfortunately, this causes your character to move a little
+             slower because the game thinks you're trying to walk into a
+             bullet, and it stops you [This is NOT a side effect of the
+             red spar, it is a bug]) These powerups act as normal spars as
+             well, giving you another hit point, and counting towards your
+             spar count for the level. They are spawned randomly in place
+             of a normal spar.
+           - Various small changes that no one will notice
+
+Aug.  1/98 - Rewrote key handling to accept multiple keypresses at once
+             (which means you can run and fire at the same time) Thanks to
+             Richard Wicks for telling me how to do this! :) This new code
+             makes way for a LOT of enhancements to come, such as speed-up
+             spars and 2 player mode (!)
+           - New key handling makes player WAY too fast, and my current
+             slowdown methods sort of ruin the responsiveness :( I'll have
+             to work on things a little... (delay reduced to nothing in
+             Hyper mode for the speed freaks out there, heheh >:)
+           - Some data changed to enums. Enums are good.
+           - Pause button added. Actually, two of them: P as well as that
+             Pause key in the corner of your keyboard, which I find to be
+             underused.
+
+July 30/98 - Cleaned up source code so that it all compiles with -Wall
+             without any errors at all :)
+
+July 29/98 - Characters with close up attacks (bite, kick, flail with
+             limbs) can now actually attack and cause damage. Beware!
+           - titlescreen() and gameover() functions merged into
+             screenmsg()
+           - Intro's to levels using screenmsg() (Only says the level
+             number so far)
+           - -display command line parameter works now, though displays
+             over networks can be slow
+           - -xrm parameter made a little smarter (if directory supplied
+             doesn't have a / at the end, it adds one)
+
+July 23/98 - XRoads now responds to delete signals sent by window managers
+             (only works during play, not title screens (yet)) (I stole,
+             err... "borrowed" this code from XSokoban :) Thanks to whoever
+             wrote that game!)
+           - Wrote a function so that the game can be ended from anywhere
+             else in the program (Was using goto's before), and made
+             sensible error messages for such circumstances
+           - Argh! sig11 errors from my compiler... this is NOT good...
+             XRoads still compiles fine after a few tries
+           - Keys are now configurable in config.h in case you feel the
+             need to change them
+           - A Quit key has now been added (defaults to Escape), and
+             clicking on the window to quit has been removed, because it's
+             useless now
+           = Third public release of XRoads (v0.2)
+
+July 21/98 - No longer crashes without DISPLAY environment variable
+           - Spars now work correctly! You need to collect 10 to go on to
+             the next level, and each one collected adds to your hit
+             points. Unfortunately, there is no way (yet) to tell how many
+             spars you've collected, or how many hit points you have.
+           - 5 new maps copied straight from Crossroads 1
+
+July 19/98 - Window resizing is no longer allowed (I gleaned this from
+             Jason Nunn's "Nighthawk")
+
+July 13/98 - Okay, time to end this break... I've been slacking off :P
+           - For some reason, I made it so that XRoads can recieve Client
+             Message events. I don't know if it works right, but it's
+             there for any reason it might be useful.
+           - Fixed redrawing routines so that the window doesn't redraw
+             300 times in a row on opaque moves (This time the limiting
+             actually works! No more XSync()'s to clear the queue)
+           - Redrawing of title/gameover screens fixed similarly
+
+June 30/98 - XRoads now uses the arrow keys to move around, and the space
+             bar to fire! No more having to read the manual anymore! heheh
+             Thanks to Fredrick Knieper and Vivek for their help in
+             understanding keysyms :)
+           - Added code to provide more info about characters to help with
+             adding in powerups and special effects later
+           - Started to add in spars. They appear, but they don't function
+             quite right yet
+
+June 29/98 - Back to Work! I'm done with all the graduation stuff at high
+             school, and my girlfriend is away at camp for the next three
+             weeks, so I'll probably spend a lot of time on this.
+           - Game screens now respond to the Enter key as well
+           - Gave the player twice as much health so you'll last longer
+             (This is only until there are actual powerups in the game)
+             Actually, I did this a while ago, but forgot to mention it.
+           - Monochrome support still messed up. Does anyone really need
+             this? Because I'm not sure I want to take the time to fix it.
+           = Second public release of XRoads (v0.1.5)
+           - Began implementation of command line parameters (Bah,
+             released v0.1.5 too early :)
+           - Segfault from random number generator caught and squashed
+             thanks to Murat Deligonul
+
+June 24/98 - There is now a new option in the Makefile: Path to xrm files.
+             The XRoads Map files can now be somewhere else other than the
+             current directory.
+           - Okay, it seems my speed tinkerings have worked! Though I'm
+             still rather unsure of the speed to use... using a GAMEDELAY
+             of 50000 (50 millisecond delay per turn) seems good to me,
+             but my friend using a K6-300 says 700 (0.7 millisecond delay
+             per turn is nice. Seems strange considering my computer is a
+             LOT slower than his... Your milage may vary
+           - Just a few more tweaks, and a new version should be available
+             soon (v0.1.5). I want 0.2 to have command line parameters,
+             but that will take a while, and XRoads needs this speed fix
+             now.
+
+June 22/98 - Got things working better with usleep(). I *think* it should
+             be less reliant on cpu speed now, but haven't been able to
+             test it yet. However, characters sometimes seem to pause when
+             you hold down a button? I'll have to look into it...
+           - XRoads reported to work on Solaris 2.6, however, it has some
+             problems with the Makefile for some reason. Bigger problems
+             with BSD/OS 3.0 though.
+           - Added -I/usr/X11R6/include to the LINK= line in the Makefile.
+             On my computer, that's one of the default include paths, so
+             it seemed unneccesary, but I think other computers/os's might
+             need it
+           - New flag for Makefile: -DHYPERMODE. You thought it was fast
+             before? This basically goes as fast as possible. WAY faster
+             than with -DGAMEDELAY=0 even!
+           - I just tried it, and for some reason Monochrome support is
+             broken. I was pretty sure that code was rather independant of
+             any other code, but I guess not. Oh well, it's not REALLY
+             important, but I'll try to fix it anyway
+
+June 21/98 - Attempts made to make speed more cpu-independant. Why is
+             usleep(1) so much slower than usleep(0)??? It's one
+             microsecond!!
+           - Got word that XRoads compiles on Sparc Solaris 2.5.1, on an
+             Ultra 1/170 with only a change to the Makefile. I have added
+             the changed line to the Makefile in case anyone needs to
+             un-comment it to compile
+
+June 20/98 = First public release of XRoads (v0.1)

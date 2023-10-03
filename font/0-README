@@ -1,0 +1,18 @@
+This directory contains xbm's of the C64's character set. Basically, I
+used VICE, xmag, and bitmap to make all of these. Not all of them are used
+in XRoads however. For example, the British Pound symbol, and Pi aren't
+yet used. Also, some of them were made by me. The ones I made are:
+
+l_curly.xbm
+r_curly.xbm
+pipe.xbm
+backslash.xbm
+tilde.xbm
+underscore.xbm
+carat.xbm
+
+The up arrow and left arrow are here, and originally replaced carat and
+underscore in the original C64 ASCII set (aka PETSCII)
+
+							--Brad Johnson
+						foxtrot@autobahn.mb.ca

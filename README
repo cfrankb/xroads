@@ -1,0 +1,342 @@
+                                XROADS v0.6
+                                -----------
+What's New?
+-----------
+	Here's the main things added in v0.6:
+
+- Improved monster targetting
+- Monster alliances implemented
+- Monsters will now collect spars too
+- Character attributes added:
+	- Skulls speed up when they eat spars
+	- Rubberheads can reflect bullets
+	- Mutants and Tagteams can work together
+	- Dog is now on YOUR side
+- Monsters now obey difficulty laws, XRoads won't be as hard to start off
+- Joystick can be disabled at runtime
+- Different font for score display (In preparation for main menu code)
+
+Intro:
+------
+	Welcome to XRoads! XRoads is a game for the X Windows system that
+attempts to be like the game Crossroads (and it's sequel, Pandemonium) for
+the Commodore 64. Basically, it is a 2-dimensional, overhead view maze
+game in which you fight against a gang of monsters. Sounds simple? Guess
+again! There are (or at least, there will be) tons of different twists in
+the game which make it fun.
+
+Getting XRoads:
+---------------
+	Simple. Just go to http://www.autobahn.mb.ca/~foxtrot/xroads.html
+and download it from there. However, there's a chance that webpage might
+move... XRoads updates are posted on http://www.happypenguin.org and
+http://freshmeat.net, and if the webpage changes, these updates will
+always have the new one. (XRoads used to be on GeoCities, but since Yahoo
+took over, I'm trying to phase out that site until I can remove it)
+
+Compiling:
+----------
+	Sounds good you say? Okay, lets get you started with compiling the
+program first. I should tell you that this game was originally built on a
+Linux Slackware machine (i586) using XFree86 X11R6, and I really don't
+have access to a lot of different machines, so I can't test it on
+different operating systems. I have reports that it works fine on Solaris
+machines (With one small change to the Makefile), but that BSD has some
+problems with it. Your mileage may vary. Truthfully, it's not a very
+complex game, so all that will probably be needed for other OS's would be
+a few tweaks in the Makefile.
+
+	First of all, you'll have to unzip and untar the program. There
+are a few different ways to do it, but the easiest is like this:
+
+hostname:~$ tar zxvf xroads-v0.4.tar.gz
+
+	Then, you may want to check the Makefile to make sure it'll work
+on your system (Check the "LINK = " line if you're not using Linux). This
+step is optional. I believe the standard Makefile should work on most
+boxes (Sorry, no Imake... yet...). You may also want to look in the 
+config.h, as it contains a lot of default values, and the keyboard setup:
+
+hostname:~$ cd xroads
+hostname:~/xroads$ vi Makefile
+hostname:~/xroads$ vi config.h
+
+	Oh.. I probably should have mentioned that you should enter the
+xroads directory that the .tar.gz makes when it is uncompressed. I really
+shouldn't have to tell you that though :P Anyways, then just run "make":
+
+hostname:~/xroads$ make
+
+	If you get any errors, there's a good chance it's because of the
+Makefile. If you're positive it's not the Makefile, send me an email and
+I'll see if I can fix it for you. Hopefully, you should have a binary all
+ready to run. (I suppose you could run "strip xroads" afterwards.. though
+the executable isn't very large as it is, so it doesn't make much
+difference)
+
+Installing:
+-----------
+	To install XRoads and it's data files:
+
+hostname:~/xroads# make install
+
+	Note that you have to be root to do this. By default, this will
+put the xroads binary in /usr/X11R6/bin, and will put the data files in
+/usr/games/xroads. If you want to change these directories, just edit the
+Makefile
+
+	The *.xrm files that XRoads installs are used for maps. They can
+be edited.. but you must be VERY careful, as XRoads is very sensitive to
+the format of the map files. If that warning doesn't bother you, then
+here's some advice: Use vi to edit the maps, and make sure you're in
+"replace" mode. Each asterisk is a wall, and each space is not a wall.
+There must be exactly 20 characters per line with a carriage return at the
+end (21 in total), and they should be 23 lines long. I believe anything
+after the 23rd line will be effectively ignored, so I suppose you could
+put comments in there if you want. However, the number of maps XRoads
+knows about is hardcoded into the game, so you'll have to recompile if you
+add any extra maps unfortuntely. Changing existing levels shouldn't be a
+problem though. This README is also copied to the data directory, just in
+case you need it.
+
+	If you get tired of XRoads and want to get rid of it, just type
+'make uninstall' (assuming you still have the source code), and all the
+files that 'make install' put on your system will be removed. In case you
+deleted the source code a LONG time ago, all you have to do is delete the
+files in the directory that this file is in, and delete the xroads binary.
+Nothing else should have been installed on your system.
+
+Playing:
+--------
+	So, it compiled alright? Great! Now you'll need to know how to
+play the game. If you run the program, it should come up with a rather
+bland title screen. Just click the window to start the game. Use the arrow
+keys to move your character, and Enter to fire. Some other keys are:
+
+1 - New map
+r - Redraw Screen
+Escape - Exit Game
+Pause or P - Pause Game
+
+	To play a multiplayer game, just start the game using the command
+line parameter -p, for example "xroads -p 2" will start a two player game.
+You can play with up to four players. The controls for the other three
+players are as follows:
+
+Player:       1             2             3             4
+Color:      Green          Red          Yellow         Blue
+-------------------------------------------------------------
+Up            Up            W             I             8
+Left         Down           A             J             4
+Down         Down           S             K             5
+Right       Right           D             L             6
+Fire        Enter          Tab          Space         Enter
+Fire 2        \          CapsLock         N             +
+
+(Note: Player 4 uses the keypad)
+(Note #2: Fire 2 doesn't do anything yet, but will someday)
+
+	Also, if you type "xroads -keys", you will be given a list of the
+keyboard setup. If you don't like the default keys, you can change them in
+config.h and recompile. If four players on a keyboard is too crowded for
+your tastes, you can use a joystick for one player (if you have one). See
+below for details.
+
+	The rest of the game is pretty simple to learn. Run around and
+shoot the monsters, and avoid being shot yourself. The white swirling fan
+things are called "Spars". You must pick 10 of them up to get to the next
+level (I know, it was 5 in the original Crossroads, but XRoads is faster
+paced, so I upped the number). Each spar will also give you one more hit
+point, you start with 5 hit points, and you can never have more than 9
+hit points at once. Your spar count, health, and score are printed at the
+bottom of the screen. Each player has their own health and score, and a
+level is ended as soon as any of the players collects ten spars (Spars are
+counted individually)
+
+	As an added bonus, there are two special spars in the game; the
+Red and Blue spars. The Red Spar speeds up your firing rate, letting you
+shoot a lot quicker (though the bullets don't actually move quicker), and
+the Blue Spar makes you run faster. This may be difficult to control at
+first, but it will become quite powerful once you get used to it. These
+spars still count as regular spars too, giving you an extra hit point and
+counting towards your spar count.
+
+	Each monster you kill earns you 100 points, and a spar gives you
+200 points. Passing a level rewards all players with an extra 500 points.
+(This scoring system will likely change in the future)
+
+	If you die, you'll be presented with another bland screen, which
+(when clicked on) will go back to the title screen. If you are playing a
+multiplayer game, then all players must die before the game will end. To
+exit the game, just hit Escape, or click the delete button on your window
+manager.
+
+	Run XRoads with the parameter "-help" to get information on other
+command line parameters you can use to change some of the games options.
+
+Random Mazes:
+-------------
+	Getting bored of the levels in XRoads? Try random maze mode! Just
+start XRoads with "xroads -maze", and each level will be generated
+randomly. The random levels can be quite difficult, but should all be
+solvable (If for some reason, you get a map that is unsolvable, just hit
+'1' to generate a new map.) The seed used to generate each random maze is
+printed to the console, though there is (as of yet) no way of entering a
+seed to use
+
+Joystick Control:
+-----------------
+	If you compiled with joystick support enabled (Linux only), the
+joystick will be enabled by default, and will control player 1. For a
+multiplayer game, you can have the joystick control a different player
+with the -j option. For example, "xroads -p 4 -j 2" will start a four
+player game, and the joystick will control player 2.
+
+	If you are using an analog joystick, you might want to change the
+value of JS_SENS in config.h and recompile. The higher it is, the farther
+you will have to push the stick before your player will move. If you're
+using a flightstick, this is important! I'm told a value of 20000 works ok
+for a Sidewinder.
+
+	However, there is a chance that your joystick may not work very
+well in XRoads, and since it's enabled by default, it may cause problems
+(Such as your player constantly walking to the left or such). If this is
+the case, then try starting XRoads like so: "xroads -j 0", and the
+joystick will be disabled. If you'd rather disable it permanently, you can
+recompile XRoads without the joystick code entirely.
+
+The Monsters:
+-------------
+	There is a large variety of monsters in XRoads, each with their
+own traits and abilities. Some fire bullets at you, while others can only
+bite you. Some have special abilities which are explained here.
+
+	It is important to note that you are NOT the monsters only enemy.
+Many of the monsters have their own enemies too, and will attack some of
+the other monsters. However, they don't hate every other monster. For
+example, the Brown Monkey and the Rubberheads are enemies, but a
+Rubberhead won't attack a Blue Flea. If there are a lot of a certain
+monster in a level, you can even the score by letting their enemy thin out
+their ranks. Sometimes sparing an enemies life will help you kill off more
+of a different enemy. 
+
+	If a monster cannot find something fun for it to shoot, it will
+often seek out it's friends, and clump together with them. Gangs of
+monsters will form occasionally if you don't clear them out.
+
+	The Brown Dog is actually not an enemy. He will attack your
+enemies, and help you out. However, if he accidentally gets in the way of
+your bullets, he will die.
+
+	The purple, blue, and green Rubberheads can be VERY dangerous. The
+weapon they fire is a worm, which is an enemy in itself which can fire
+bullets at you. Not only do you have to kill these worms, but you also
+have to worry about killing the Rubberhead too. As if this wasn't enough,
+there's also a very good reason they are called Rubberheads. Unless you
+fire while they are facing you, your bullet will bounce right off them,
+doing no damage whatsoever.
+
+	The White Skulls have no ranged attacks, but that doesn't mean
+they are pushovers. If a Skull happens across a spar, it will get faster
+when it eats it. After two of these spars, they will be incredibly fast,
+and your best chance may be to hide and hope the other monsters manage to
+overcome it. (Note that in addition to the speedup, they also get an extra
+hit point, so they will take more shots to kill)
+
+	The Green Vaccuum cannot shoot you or bite you. However, he has an
+even more dangerous attack! He can suck you towards him with his vaccuum.
+If you get too close, it means instant death! You can evade the vaccuum
+if you notice it soon enough, but don't run too close to him.
+
+	The Pink Human, and the Pink Tagteam can join together to fight
+you! If a human happens across a Tagteam, he will jump on it's back and
+ride it around. The resulting monster is faster and deadlier! In later
+levels, this monster will appear automatically!
+
+	There are a few monsters (notably the Blue Egghead and the Red
+Chomper) that can turn themselves invisible! They can only do this when
+they are relatively undisturbed, and their invisibility can be disrupted
+if they are attacked. This does not happen in the early levels of the
+game. [Note: This is not yet implemented]
+
+Bugs:
+-----
+	Yes, there's bugs... after all, it's a really early version of the
+game, so don't rag on me too bad... There should have been a file called
+BUGS included in the .tar.gz... it has what you're looking for. If I
+manage to fix a big bug, I'll probably release another version (Such as
+0.6.1 or something).
+
+What's Coming?
+--------------
+	XRoads is also quite unfinished as well. My current plan is to get
+it working about as well as Crossroads itself works first (hopefully, this
+will be version 1.0), and then add my own extra features and powerups and
+such. In case you want to know exactly what I have in mind, take a look at
+the TODO file that came with XRoads. There's a ton of stuff in there, and
+a lot of it is just stuff I thought up off the top of my head, so don't
+hold your breath. Most of the Crossroads stuff has been finished however,
+so many of the changes from now on will be changes to gameplay to make it
+feel more like Crossroads, and new additions that I make to it myself.
+
+	The main things I'd like to add now are an options menu of sorts,
+without having to learn anything about any widget sets. I'd also like to
+work sound effects in someday soon. "Cloaking" remains unimplemented, and
+may remain so for a while. Gameplay also requires a lot of tweaks before
+it plays just like Crossroads. One of these days, I'd like to make XRoads
+use higher resolution for it's tiles (This will break the HALFSIZE and
+DOUBLESIZE options though)
+
+Crossroads:
+-----------
+	Crossroads was originally written by Steve Harter for the
+Commodore 64 in 1987, and was published by Compute!'s Gazette. Crossroads
+II: Pandemonium was published in 1988. If you would like to play the
+original Crossroads, there is a gzipped .d64 file on the XRoads webpage
+(http://www.autobahn.mb.ca/~foxtrot/xroads.html). You will need a
+Commodore 64 emulator to be able to play it. Further instructions are on
+the webpage (Note: I don't know if offering this .d64 is legal or not, so
+if anyone can prove to me that it isn't, I'll take it down immediately)
+
+Contacting Me:
+--------------
+	Got a question? Found a new bug? Want to tell me my game sucks?
+Got XRoads to compile a different operating system? Go right ahead! My
+email address is foxtrot@autobahn.mb.ca and it is checked fairly often, so
+I'll probably reply rather quickly. However, if you send me a message
+like: "Your game sucks bad! You're not as l33t as I am! Muhahaha!" there's
+a good chance I'll just delete it and forget about it. I don't work on
+this game to get yelled at :P If you don't get a reply, well, sorry... I'm
+a pretty lazy person, and my life gets a little hectic at times...
+
+	I'm also on ICQ and IRC once in a blue moon... My UIN is 5149932,
+and on IRC, I usually go by the nickname Ze_ro
+
+Thanks:
+-------
+	Big thanks go out to the following people:
+
+Bob Glamm (SGI help)
+Michele Bini (Random Maze Generator)
+Fredrick Knieper (KeySym stuff)
+Richard Wicks (Also KeySym stuff)
+and of course:
+Steve Harter (For writing the game in the first place :)
+
+Note:
+-----
+	This program is provided "as is". I accept no responsibility for
+any problems resulting from the use (or mis-use) or this program in any 
+way. Do whatever you want with this program, as long as you do me a few 
+favors:
+
+ 1 - Make sure to give me *some* credit (all you have to do is mention my
+     name somewhere)
+ 2 - Any use of this code, wether in it's original form or in an altered
+     state, must be provided free of charge. That goes for binaries AND
+     source code.
+
+That's all for now... have fun!
+						--Brad Johnson
+						  foxtrot@autobahn.mb.ca
+http://www.autobahn.mb.ca/~foxtrot/xroads.html
